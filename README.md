@@ -1,0 +1,1 @@
+The learning task. Creating a Recyclerview

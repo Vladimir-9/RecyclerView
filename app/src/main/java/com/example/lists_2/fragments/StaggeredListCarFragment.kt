@@ -1,0 +1,208 @@
+package com.example.lists_2.fragments
+
+import android.os.Bundle
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.example.lists_2.*
+import com.example.lists_2.adapters.CarAdapter
+import com.leinardi.android.speeddial.SpeedDialActionItem
+import com.leinardi.android.speeddial.SpeedDialView
+import jp.wasabeef.recyclerview.animators.FlipInTopXAnimator
+import kotlin.random.Random
+
+class StaggeredListCarFragment : Fragment(R.layout.fragment_list), AddCar {
+    private lateinit var textViewEmpty: TextView
+    private lateinit var recycleView: RecyclerView
+    private lateinit var fab: SpeedDialView
+    private var listCar = listOf(
+        Car.PassengerCar(
+            1,
+            "Ford",
+            "Focus",
+            5,
+            "https://avilon-trade.ru/img/catalog/ford/focus/3.jpg"
+        ),
+        Car.PassengerCar(
+            2,
+            "Toyota",
+            "Corolla",
+            5,
+            "https://images.ru.prom.st/92166191_w640_h640_toyota-corolla-2013.jpg"
+        ),
+        Car.PassengerCar(
+            3,
+            "Mitsubishi",
+            "pajero",
+            7,
+            "https://gulliverauto.ru/images/models_auto/other/addimg_mitsubishi_pajero.jpg"
+        ),
+        Car.PassengerCar(
+            4,
+            "Subaru",
+            "Impreza",
+            5,
+            "https://i.pinimg.com/originals/64/69/7d/64697de683127505dd97165ab47eb97d.jpg"
+        ),
+        Car.CargoVehicle(
+            5,
+            "Ford",
+            "Transit",
+            1350,
+            "https://a.d-cd.net/17288eds-960.jpg"
+        ),
+        Car.CargoVehicle(
+            6,
+            "Mercedes",
+            "Sprinter",
+            1005,
+            "https://comauto76.ru/wp-content/uploads/2020/01/sprinter.png"
+        ),
+        Car.PassengerCar(
+            7,
+            "Subaru",
+            "Impreza",
+            5,
+            "https://i.pinimg.com/originals/64/69/7d/64697de683127505dd97165ab47eb97d.jpg"
+        ),
+        Car.CargoVehicle(
+            8,
+            "Ford",
+            "Transit",
+            1350,
+            "https://a.d-cd.net/17288eds-960.jpg"
+        ),
+        Car.CargoVehicle(
+            9,
+            "Mercedes",
+            "Sprinter",
+            1005,
+            "https://autodmir.ru/logo/1/20565/mercedes-sprinter-20565.jpg"
+        )
+    )
+
+    private var carAdapter: CarAdapter by AutoClearedValue(this)
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        recycleView = view.findViewById(R.id.recycle_view)
+        fab = view.findViewById(R.id.speedDial)
+        textViewEmpty = view.findViewById(R.id.tw_empty)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        initList()
+
+        listCar =
+            if (savedInstanceState == null) listCar else {
+                savedInstanceState.getParcelableArray(SAVE_STAGGERED_GRID_LIST_CAR)
+                    ?.toList() as List<Car>
+            }
+
+        fab.setOnActionSelectedListener { actionItem ->
+            when (actionItem.id) {
+                R.id.fab_passenger_car -> {
+                    CarDialogFragment.saveArgCarDialogFragment(false)
+                        .show(childFragmentManager, null)
+                }
+                R.id.fab_cargo_car -> {
+                    CarDialogFragment.saveArgCarDialogFragment(true)
+                        .show(childFragmentManager, null)
+                }
+            }
+            false
+        }
+
+        with(fab) {
+            addActionItem(
+                SpeedDialActionItem.Builder(R.id.fab_passenger_car, R.drawable.ic_car)
+                    .setTheme(R.style.Theme_Fab_Car)
+                    .create()
+            )
+            addActionItem(
+                SpeedDialActionItem.Builder(R.id.fab_cargo_car, R.drawable.ic_bus)
+                    .setTheme(R.style.Theme_Fab_CargoCar)
+                    .create()
+            )
+        }
+        carAdapter.items = listCar
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putParcelableArray(SAVE_STAGGERED_GRID_LIST_CAR, listCar.toTypedArray())
+    }
+
+    private fun initList() {
+        carAdapter =
+            CarAdapter(
+                requireContext(),
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                0,
+                70.toDp(requireContext()),
+                100.toDp(requireContext()),
+                true
+            ) { position ->
+                deleteCar(position)
+            }
+        with(recycleView) {
+            adapter = carAdapter
+            layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+            itemAnimator = FlipInTopXAnimator()
+            setHasFixedSize(true)
+            addItemDecoration(ItemOffsetDecoration(requireContext()))
+        }
+    }
+
+    private fun isEmptyListCar() {
+        if (listCar.isEmpty()) {
+            textViewEmpty.visibility = View.VISIBLE
+        } else {
+            textViewEmpty.visibility = View.GONE
+        }
+    }
+
+    private fun deleteCar(position: Int) {
+        listCar = listCar.filterIndexed { index, _ -> index != position }
+        carAdapter.items = listCar
+        isEmptyListCar()
+    }
+
+    override fun addNewCar(
+        automaker: String,
+        model: String,
+        capacity: String,
+        carLink: String,
+        isCargoVehicle: Boolean,
+        isCorrectDataNewCar: CorrectData
+    ): Boolean {
+        if (isCorrectDataNewCar.isCorrectData(
+                automaker,
+                model,
+                capacity,
+                carLink,
+                requireContext()
+            )
+        ) {
+            val newCar: Car = if (isCargoVehicle)
+                Car.CargoVehicle(Random.nextLong(), automaker, model, capacity.toInt(), carLink)
+            else
+                Car.PassengerCar(Random.nextLong(), automaker, model, capacity.toInt(), carLink)
+            listCar = listOf(newCar) + listCar
+            carAdapter.items = listCar
+            recycleView.scrollToPosition(0)
+            isEmptyListCar()
+            return true
+        } else {
+            return false
+        }
+    }
+
+    companion object {
+        const val SAVE_STAGGERED_GRID_LIST_CAR = "saveStaggeredGridListCar"
+    }
+}

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:theme="@style/Theme.Custom.View.Dialog">
+
+    <TextView
+        android:id="@+id/tw_automaker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_automaker"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@id/et_automaker"
+        app:layout_constraintEnd_toEndOf="@id/et_automaker"
+        app:layout_constraintStart_toStartOf="@id/et_automaker" />
+
+    <EditText
+        android:id="@+id/et_automaker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/hint_text_automaker"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.1" />
+
+    <TextView
+        android:id="@+id/tw_model"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:text="@string/text_model"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@id/et_automaker"
+        app:layout_constraintStart_toStartOf="@id/et_automaker"
+        app:layout_constraintTop_toBottomOf="@id/et_automaker" />
+
+    <EditText
+        android:id="@+id/et_model"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/hint_text_model"
+        app:layout_constraintEnd_toEndOf="@id/tw_model"
+        app:layout_constraintStart_toStartOf="@id/tw_model"
+        app:layout_constraintTop_toBottomOf="@id/tw_model" />
+
+    <TextView
+        android:id="@+id/tw_capacity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:text="@string/text_capacity"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@id/et_model"
+        app:layout_constraintStart_toStartOf="@id/et_model"
+        app:layout_constraintTop_toBottomOf="@id/et_model" />
+
+    <EditText
+        android:id="@+id/et_capacity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/hint_text_capacity"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="@id/tw_capacity"
+        app:layout_constraintStart_toStartOf="@id/tw_capacity"
+        app:layout_constraintTop_toBottomOf="@id/tw_capacity" />
+
+    <TextView
+        android:id="@+id/tw_carLink"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:text="@string/text_link"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@id/et_capacity"
+        app:layout_constraintStart_toStartOf="@id/et_capacity"
+        app:layout_constraintTop_toBottomOf="@id/et_capacity" />
+
+    <EditText
+        android:id="@+id/et_carLink"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/hint_text_link"
+        app:layout_constraintEnd_toEndOf="@id/tw_carLink"
+        app:layout_constraintStart_toStartOf="@id/tw_carLink"
+        app:layout_constraintTop_toBottomOf="@id/tw_carLink" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

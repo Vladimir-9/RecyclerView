@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Lists_2</string>
+    <string name="text_automaker">Введите производителя</string>
+    <string name="text_model">Введите модель</string>
+    <string name="text_capacity">Введите вместимость</string>
+    <string name="text_link">Введите ссылку</string>
+
+    <string name="hint_text_automaker">Производитель</string>
+    <string name="hint_text_model">Модель</string>
+    <string name="hint_text_capacity">Вместимость</string>
+    <string name="hint_text_link">Ссылка</string>
+    <string name="text_empty">Список пуст</string>
+    <string name="three">Three</string>
+    <string name="two">Two</string>
+    <string name="one">One</string>
+</resources>
